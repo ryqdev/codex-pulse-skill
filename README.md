@@ -19,8 +19,8 @@ Skill 文件位于 [skills/codex-pulse](skills/codex-pulse/SKILL.md)，包含运
 
 ## 运行环境
 
-- 分析 HTML/SVG 或运行新评测：需要 Node.js 和 npm/npx。CLI 当前的 Node.js 要求为
-  `^22.22.2 || ^24.15.0 || >=26.0.0`，最新要求可用 `npm view @ryqdev/pelican-test@latest engines` 查看。
+- 分析 HTML/SVG 或运行新评测：需要 Node.js 和 npm/npx。以所选 CLI 包的 `engines` 为准，
+  可用 `npm view @ryqdev/pelican-test@latest engines --json` 查看已发布版本要求。
 - 运行新评测：还需要本机已安装并配置好 Codex，使用当前账号或 provider 的额度。
 - 读取或比较已有 JSON 报告：直接读取文件，无需启动 CLI 或调用模型。
 
@@ -36,6 +36,7 @@ $codex-pulse 分析 result.html，并解释主要扣分项。
 $codex-pulse 用当前 Codex 配置跑一次评测，返回评分和报告路径。
 $codex-pulse 解读 .pelican/runs/<run-id>/report.json。
 $codex-pulse 比较 report-a.json 和 report-b.json，说明评分差异。
+$codex-pulse 跑一次评测，并把结果带回 Codex Pulse 发布。
 ```
 
 文件路径和输出目录均相对于当前项目。新评测默认生成一次，使用本机 Codex 配置，
@@ -52,6 +53,20 @@ npx --yes @ryqdev/pelican-test@latest --help
 
 开发者如需测试已有的本地 CLI 源码，可在请求中提供源码仓库的绝对路径；
 Skill 会按该仓库的 `package.json` 准备和调用本地 CLI。
+
+## 发布到网站
+
+```bash
+npx --yes @ryqdev/pelican-test@latest connect --site https://codex-pulse.com --port 0
+```
+
+连接器打开配对页面；连接电脑、开始测试，然后将 HTML、评分和预览图带回发布草稿。
+登录并确认后提交，审核通过才会公开。该流程需要网站的连接器集成版本上线。
+已有文件或使用其他 agent 时，先 `analyze`，再到网站上传截图和可选 HTML；
+`run` / `connect` 当前只调用本地 Codex，不代表运行 Skill 的客户端模型。
+
+遇到镜像 registry 的 E404，可在 npx 命令加上 `--registry=https://registry.npmjs.org` 重试。
+无需改变全局 npm 配置或关闭 Node 版本校验。
 
 ## 评分范围
 
