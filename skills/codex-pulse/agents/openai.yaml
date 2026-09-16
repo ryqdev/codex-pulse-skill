@@ -1,0 +1,3 @@
+interface:
+  display_name: "Codex Pulse"
+  short_description: "运行 Pelican 评测、分析 HTML/SVG 输出并解读评分报告"
